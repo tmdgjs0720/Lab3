@@ -5,7 +5,18 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
+int main(int argc, char **argv) {
+    if (argc < 2) {
+        fprintf(stderr, "Please provide command arguments\n");
+        return 1;
+    }
+    
+    // 파일 재지향 및 파이프 기능 실행
+    redirection(argc - 1, argv + 1);
+    pipe_launch(argc - 1, argv + 1);
+    
+    return 0;
+}
 void redirection(int narg, char **argv) {
     pid_t pid;
     int i = 0;
@@ -61,12 +72,13 @@ void redirection(int narg, char **argv) {
         }
         
         execvp(cmd[0], cmd);
+        perror("[ERROR] EXECVP: ");
+        exit(1);
     }
     else if(pid > 0) {
         wait(NULL);
     }
 }
-
 void pipe_launch(int narg, char **argv) {
     pid_t pid;
     int command_pos = 0;

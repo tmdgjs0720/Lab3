@@ -106,7 +106,7 @@ void handler(int narg, char **argv) {
 }
 /* pwd
  * 현재 작업 중인 디렉토리 출력 
- * authour tmdgjs0720 오승헌
+ * authour tmdgjs0720
  */
 void pwd(){
 	char *buf = (char *)malloc(sizeof(char)*(BUFSIZE));
@@ -122,7 +122,7 @@ void pwd(){
 }
 /* ls
  * 현재 디렉토리 파일 목록 출력
- * authour tmdgjs0720 오승헌
+ * authour tmdgjs0720
  */
 void ls(int narg, char **argv){
 	char temp[256];
@@ -149,7 +149,7 @@ void ls(int narg, char **argv){
 }
 /* cd
  * 디렉토리 위치 이동하는 명령어
- * authour tmdgjs0720 오승헌
+ * authour tmdgjs0720
  */
 void cd(int narg, char **argv){
 	if(narg ==1){
@@ -163,7 +163,7 @@ void cd(int narg, char **argv){
 }
 /* mkdir
  * 디렉토리 생성
- * authour cmsong111 김남주
+ * authour cmsong111
  */
 void mkdir_(int narg, char **argv){
 	umask(0);
@@ -180,7 +180,7 @@ void mkdir_(int narg, char **argv){
 }
 /* rmdir
  * 디렉토리 삭제
- * authour cmsong111 김남주
+ * authour cmsong111
  */
 void rmdir_(int narg, char **argv){
     int i =0;
@@ -206,7 +206,7 @@ void rmdir_rm(int narg, char ** argv) {
 }
 /* ln
  * 파일 링크 생성
- * authour cmsong111 김남주
+ * authour cmsong111
  */
 void ln(int narg, char **argv){
 	char cmd;
@@ -253,7 +253,7 @@ void ln(int narg, char **argv){
 }
 /* cp
  * 파일 복사
- * authour cdiff 이태수
+ * authour cdiff
  */
 void cp(int narg, char **argv){
 	int src_fd; 
@@ -286,7 +286,7 @@ void cp(int narg, char **argv){
 }
 /* mv
  * 파일 이동 및 파일 이름 변경
- * authour tmdgjs0720 오승헌
+ * authour cdiff
  */
 void mv(int narg, char **argv){
 struct stat buf;
@@ -343,29 +343,27 @@ struct stat buf;
 }
 /* cat
  * 파일 내용 출력
- * authour cdiff 이태수
+ * authour cdiff
  */
-void cat(int narg, char **argv){
-	FILE *file[narg-1];
+void cat(int narg, char **argv) {
+    FILE *file[narg - 1];
     int loop;
-    char buf;
-    if (narg <1) {
-        fprintf(stderr, "Please Input Files \n");
+    int buf;
+    if (narg < 2) {
+        fprintf(stderr, "Please Input Files\n");
         exit(1);
     }
-    for(loop =0; loop<narg-1; loop++) {
-        file[loop] = fopen(argv[loop+1],"r");
-        if(file[loop] ==NULL) {
-            printf("cat : %s : No such file or directory \n",argv[loop+1]);
-        }
-        else {
-            while((buf = fgetc(file[loop])) != EOF) {
-                printf("%c",buf);
+    for (loop = 0; loop < narg - 1; loop++) {
+        file[loop] = fopen(argv[loop + 1], "r");
+        if (file[loop] == NULL) {
+            printf("cat: %s: No such file or directory\n", argv[loop + 1]);
+            continue;
+        } else {
+            while ((buf = fgetc(file[loop])) != EOF) {
+                printf("%c", buf);
             }
-        
-            if((fclose(file[loop])) !=0)
-            {
-                perror("CAT");
+            if (fclose(file[loop]) != 0) {
+                perror("fclose");
             }
         }
     }
